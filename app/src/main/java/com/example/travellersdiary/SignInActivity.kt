@@ -50,7 +50,7 @@ class SignInActivity: AppCompatActivity() {
     }
 
     private fun goToMainActivity() {
-        startActivity(Intent(this, MapsActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {

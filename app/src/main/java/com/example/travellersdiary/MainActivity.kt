@@ -7,7 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.travellersdiary.databinding.ActivityMapsBinding
+import com.example.travellersdiary.databinding.ActivityMainBinding
+import com.example.travellersdiary.main.MainContract
+import com.example.travellersdiary.main.MainPresenter
+import com.example.travellersdiary.main.MainRepo
+import com.example.travellersdiary.models.RealmPlace
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,31 +19,35 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+class MainActivity : AppCompatActivity(),
+    OnMapReadyCallback,
+    GoogleMap.OnMapLongClickListener,
+    MainContract.View {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityMapsBinding
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMapsBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.title = getString(R.string.app_name)
 
+        presenter = MainPresenter(this, MainRepo())
+
         auth = Firebase.auth
-        if (auth.currentUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(Intent(this, SignInActivity::class.java))
-            finish()
-            return
-        }
+
+        checkIfUserIsSignedIn()
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -47,8 +55,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mapFragment.getMapAsync(this)
     }
 
-    public override fun onStart() {
-        super.onStart()
+    private fun checkIfUserIsSignedIn() {
         // Check if user is signed in.
         if (auth.currentUser == null) {
             // Not signed in, launch the Sign In activity
@@ -58,6 +65,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         }
     }
 
+    public override fun onStart() {
+        super.onStart()
+        checkIfUserIsSignedIn()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -65,8 +77,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.sign_out ->  {
+        return when (item.itemId) {
+            R.id.sign_out -> {
                 signOut()
                 true
             }
@@ -85,7 +97,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
                 Toast.makeText(
                     this,
                     "There was an error signing out",
-                    Toast.LENGTH_LONG).show()
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -103,10 +116,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mMap = googleMap
         mMap.setOnMapLongClickListener(this)
 
-        // Add a marker in Sydney and move the camera
-        val prishtina = LatLng(42.66, 21.16)
-        mMap.addMarker(MarkerOptions().position(prishtina).title("Prishtina"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(prishtina))
+        Log.d("Premt", "Map is ready")
+        presenter.loadPlaces()
+
     }
 
     override fun onMapLongClick(p0: LatLng) {
@@ -117,5 +129,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
                 .title(place.name)
                 .position(place.position)
         )
+    }
+
+    override fun showMessage(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction("Okay") {}
+            .show()
+    }
+
+    override fun showPlaces(favouritePlaces: List<RealmPlace>) {
+        // Add a marker in Prishtina and move the camera
+        val prishtina = LatLng(42.66, 21.16)
+        mMap.addMarker(MarkerOptions().position(prishtina).title("Prishtina"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(prishtina))
     }
 }

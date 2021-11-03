@@ -4,7 +4,7 @@ import io.realm.RealmObject
 
 open class PlaceCoordinates: RealmObject() {
 
-    var lat: Double? = null
+    var latitude: Double = 0.0
 
-    var lon: Double? = null
+    var longitude: Double = 0.0
 }

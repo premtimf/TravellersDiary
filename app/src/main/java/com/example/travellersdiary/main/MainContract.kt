@@ -9,6 +9,7 @@ import io.reactivex.Observable
 class MainContract {
 
     interface View {
+
         fun showMessage(message: String)
 
         fun showPlaces(favouritePlaces: List<RealmPlace>)

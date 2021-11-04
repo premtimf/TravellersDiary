@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.travellersdiary.R
 import com.example.travellersdiary.SignInActivity
+import com.example.travellersdiary.addPlace.AddPlaceActivity
 import com.example.travellersdiary.databinding.ActivityMainBinding
 import com.example.travellersdiary.models.RealmPlace
 import com.firebase.ui.auth.AuthUI
@@ -117,7 +118,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onMapLongClick(p0: LatLng) {
-        //TODO: getLatLng and open activity to write a place
+        val intent = AddPlaceActivity.newIntent(this, p0.latitude, p0.longitude)
+        startActivity(intent)
         Log.d("MainActivity", "LongClicked")
     }
 

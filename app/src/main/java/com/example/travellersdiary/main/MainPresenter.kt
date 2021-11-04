@@ -32,7 +32,6 @@ class MainPresenter(
                     view.showNoPlacesMessage("No favourite places yet! Long click to add a favourite place")
                 } else {
                     view.showPlaces(placesReturned)
-                    view.showMessage("Places: ${placesReturned.size}")
                     placesReturned.forEach {
                         Log.d(TAG, it.toString())
                     }

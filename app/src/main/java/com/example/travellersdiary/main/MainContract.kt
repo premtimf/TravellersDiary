@@ -10,11 +10,11 @@ class MainContract {
 
     interface View {
 
-        fun showMessage(message: String)
+        fun showMessage(message: Int)
 
         fun showPlaces(favouritePlaces: List<RealmPlace>)
 
-        fun showNoPlacesMessage(noPlaces: String)
+        fun showNoPlacesMessage(noPlaces: Int)
 
         fun removeNoPlacesMessage()
 

@@ -12,10 +12,10 @@ open class RealmPlace: RealmObject() {
 
     var position: PlaceCoordinates? = null
 
-    var photoLink: String = ""
+    var picture: String = ""
 
     override fun toString(): String {
-        return "RealmPlace(id='$id', name='$name', position=$position, photoLink=$photoLink)"
+        return "RealmPlace(id='$id', name='$name', position=$position, photoLink=$picture)"
     }
 
 

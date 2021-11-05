@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravellersDiary">
         <activity
+            android:name=".places.PlacesActivity"
+            android:exported="false" />
+        <activity
             android:name=".addPlace.AddPlaceActivity"
             android:exported="false" />
         <!--
@@ -46,8 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity" />
-        <!--Providers-->
+        <activity android:name=".SignInActivity" /> <!-- Providers -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.android.fileprovider"

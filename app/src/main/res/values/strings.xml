@@ -2,4 +2,20 @@
     <string name="app_name">TravellersDiary</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="sign_out">Sign out</string>
+    <string name="add_picture_link_or_capture_one">Add picture link or capture one</string>
+    <string name="capture_photo">Capture photo</string>
+    <string name="save_place">Save place</string>
+    <string name="place_name">Place name</string>
+    <string name="places_list">Places list</string>
+    <string name="ok">OK</string>
+    <string name="permissions_needed">Permissions to add photo needed</string>
+    <string name="image_uploaded">Image Uploadad</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="failed_to_get_link">Failed to get link</string>
+    <string name="place_inserted">Place inserted successfully</string>
+    <string name="failed_to_save_place">Failed to save place</string>
+    <string name="failed_to_load_places">Failed to load places</string>
+    <string name="failed_to_update_places">Failed to update places from database</string>
+    <string name="no_places_message">No favourite places yet! Long click to add one.</string>
+    <string name="place_picture">Place picture</string>
 </resources>

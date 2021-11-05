@@ -1,6 +1,7 @@
 package com.example.travellersdiary.addPlace
 
 import android.net.Uri
+import com.example.travellersdiary.R
 import com.example.travellersdiary.models.Place
 import com.google.android.gms.maps.model.LatLng
 import java.io.File
@@ -25,9 +26,9 @@ class AddPlacePresenter(private val view: AddPlaceContract.View, private val add
         val imageStorage = addPlaceRepo.getUploadImageRef(fileName)
         val uploadTask = imageStorage.putFile(currentPhotoUri)
         uploadTask.addOnSuccessListener {
-            view.showMessage("Image Uploadad")
+            view.showMessage(R.string.image_uploaded)
         }.addOnFailureListener {
-            view.showMessage("Failed to upload image")
+            view.showMessage(R.string.failed_to_upload_image)
         }
 
         uploadTask.continueWithTask { task ->
@@ -42,7 +43,7 @@ class AddPlacePresenter(private val view: AddPlaceContract.View, private val add
                 val downloadUri = task.result
                 view.setUrlText(downloadUri.toString())
             } else {
-                view.showMessage("Failed to get link")
+                view.showMessage(R.string.failed_to_get_link)
             }
         }
     }
@@ -60,9 +61,9 @@ class AddPlacePresenter(private val view: AddPlaceContract.View, private val add
             if (key != null) {
                 val place = Place(key, view.placeName, placePosition, view.photoLink)
                 placeRef.setValue(place).addOnSuccessListener {
-                    view.showMessage("Place inserted successfully")
+                    view.showMessage(R.string.place_inserted)
                 }.addOnFailureListener {
-                    view.showMessage("Failed to save place")
+                    view.showMessage(R.string.failed_to_save_place)
                 }
             }
         }

@@ -14,9 +14,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.travellersdiary.BuildConfig
+import com.example.travellersdiary.R
 import com.example.travellersdiary.databinding.ActivityAddPlaceBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.io.IOException
 
@@ -65,7 +65,7 @@ class AddPlaceActivity : AppCompatActivity(), AddPlaceContract.View {
         when {
             permissionsGranted -> takePhoto()
             shouldRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA) ->
-                showMessage("Permissions to add photo needed")
+                showMessage(R.string.permissions_needed)
             else -> {
                 ActivityCompat.requestPermissions(
                     this,
@@ -76,9 +76,9 @@ class AddPlaceActivity : AppCompatActivity(), AddPlaceContract.View {
         }
     }
 
-    override fun showMessage(message: String) {
+    override fun showMessage(message: Int) {
         Snackbar.make(binding.rootConstraintLayout, message, Snackbar.LENGTH_SHORT)
-            .setAction("Okay") {}
+            .setAction(R.string.ok) {}
             .show()
     }
 
@@ -127,6 +127,9 @@ class AddPlaceActivity : AppCompatActivity(), AddPlaceContract.View {
         }
     }
 
+    override val placeName: String
+        get() = binding.placeNameText.text.toString()
+
     companion object {
 
         private const val TAG = "AddPlaceActivity"
@@ -143,9 +146,6 @@ class AddPlaceActivity : AppCompatActivity(), AddPlaceContract.View {
             }
         }
     }
-
-    override val placeName: String
-        get() = binding.placeNameText.text.toString()
 
     override val photoLink: String
         get() = binding.photoLinkText.text.toString()

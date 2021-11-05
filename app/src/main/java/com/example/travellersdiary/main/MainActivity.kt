@@ -1,5 +1,6 @@
 package com.example.travellersdiary.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import com.example.travellersdiary.SignInActivity
 import com.example.travellersdiary.addPlace.AddPlaceActivity
 import com.example.travellersdiary.databinding.ActivityMainBinding
 import com.example.travellersdiary.models.RealmPlace
+import com.example.travellersdiary.places.PlacesActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -67,6 +69,10 @@ class MainActivity : AppCompatActivity(),
                 signOut()
                 true
             }
+            R.id.places_list -> {
+                startActivity(Intent(this, PlacesActivity::class.java))
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -99,6 +105,7 @@ class MainActivity : AppCompatActivity(),
         mMap = googleMap
         mMap.setOnMapLongClickListener(this)
         mMap.setInfoWindowAdapter(MarkerInfoAdapter(this))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(42.656141630821416, 21.151792722748393)))
         loadContent()
     }
 
@@ -120,12 +127,12 @@ class MainActivity : AppCompatActivity(),
     override fun onMapLongClick(p0: LatLng) {
         val intent = AddPlaceActivity.newIntent(this, p0.latitude, p0.longitude)
         startActivity(intent)
-        Log.d("MainActivity", "LongClicked")
+        Log.d(TAG, "LongClicked")
     }
 
-    override fun showMessage(message: String) {
+    override fun showMessage(message: Int) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setAction("Okay") {}
+            .setAction(R.string.ok) {}
             .show()
     }
 
@@ -137,20 +144,44 @@ class MainActivity : AppCompatActivity(),
                 marker?.tag = place
             }
         }
-        val firstPlacePosition = favouritePlaces.first().position
-        if (firstPlacePosition != null) {
-            val firstPlaceLatLng = LatLng(firstPlacePosition.latitude, firstPlacePosition.longitude)
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(firstPlaceLatLng))
-        }
     }
 
-    override fun showNoPlacesMessage(noPlaces: String) {
+    override fun showNoPlacesMessage(noPlaces: Int) {
         noPlacesSnackbar = Snackbar.make(binding.root, noPlaces, Snackbar.LENGTH_INDEFINITE)
-        noPlacesSnackbar.setAction("Okay") {}
+        noPlacesSnackbar.setAction(R.string.ok) {}
             .show()
     }
 
     override fun removeNoPlacesMessage() {
         noPlacesSnackbar.dismiss()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent != null && intent.hasExtra(LATITUDE)) {
+            val latitude = intent.getDoubleExtra(LATITUDE, 0.0)
+            val longitude = intent.getDoubleExtra(LONGITUDE, 0.0)
+            moveCamera(latitude, longitude)
+        }
+    }
+
+    private fun moveCamera(latitude: Double, longitude: Double) {
+        val position = LatLng(latitude, longitude)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 6.0f))
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val LATITUDE = "latitude"
+        private const val LONGITUDE = "longitude"
+
+        fun newIntent(context: Context, latitude: Double?, longitude: Double?): Intent {
+            return Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                putExtra(LATITUDE, latitude)
+                putExtra(LONGITUDE, longitude)
+            }
+        }
     }
 }

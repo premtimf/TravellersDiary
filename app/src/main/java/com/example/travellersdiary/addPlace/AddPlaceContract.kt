@@ -14,7 +14,7 @@ class AddPlaceContract {
 
         fun setUrlText(url: String)
 
-        fun showMessage(message: String)
+        fun showMessage(message: Int)
 
     }
 

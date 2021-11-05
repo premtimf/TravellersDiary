@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/border_bottom"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/placeNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/placePicImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Place name" />
+
+    <ImageView
+        android:id="@+id/placePicImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/place_picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/placeNameText"
+        tools:src="@mipmap/ic_launcher" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

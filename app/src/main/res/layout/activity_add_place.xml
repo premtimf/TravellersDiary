@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="Place name"/>
+        android:hint="@string/place_name"/>
 
     <com.google.android.material.textfield.MaterialAutoCompleteTextView
         android:id="@+id/photoLinkText"
@@ -22,14 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:layout_constraintTop_toBottomOf="@id/placeNameText"
-        android:hint="Add picture link or capture one"/>
+        android:hint="@string/add_picture_link_or_capture_one"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addPhotoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Capture photo"
+        android:text="@string/capture_photo"
         app:layout_constraintEnd_toStartOf="@+id/savePlaceButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/photoLinkText" />
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toEndOf="@id/addPhotoButton"
         app:layout_constraintTop_toBottomOf="@id/photoLinkText"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Save place"/>
+        android:text="@string/save_place"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
